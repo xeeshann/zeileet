@@ -52,7 +52,7 @@ export default function AccountDeletionRequestPage() {
     } catch {
       setIsSubmitting(false)
       setSubmitError(
-        'We could not submit your request right now. Please retry or email hello@zeileet.com with your product details.',
+       
       )
     }
   }
@@ -121,7 +121,7 @@ export default function AccountDeletionRequestPage() {
               </label>
 
               <label>
-                Package ID / Bundle ID / Website URL
+                Website URL Or App Name
                 <input
                   name="appIdentifier"
                   type="text"
