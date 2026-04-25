@@ -11,6 +11,9 @@ export default function LetsTalkPage() {
           </Link>
 
           <div className="header-actions">
+            <Link className="pill-btn" to="/privacy-policy">
+              Privacy Policy <ArrowRight size={18} strokeWidth={2.2} />
+            </Link>
             <Link className="pill-btn" to="/founder">
               Founder <ArrowRight size={18} strokeWidth={2.2} />
             </Link>

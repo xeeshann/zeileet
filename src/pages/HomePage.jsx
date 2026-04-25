@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
+import { Link } from 'react-router-dom'
 import {
   ArrowRight,
   Calendar,
@@ -326,6 +327,9 @@ export default function HomePage() {
             <a href="#works" onClick={() => setIsMenuOpen(false)}>
               Selected Works
             </a>
+            <Link to="/privacy-policy" onClick={() => setIsMenuOpen(false)}>
+              Privacy Policy
+            </Link>
           </nav>
           <div className="menu-card">
             <p>Let&apos;s build your next website or Expo app together.</p>
@@ -504,6 +508,10 @@ export default function HomePage() {
                 <MessageCircle size={18} />
                 <span>Discovery call + project roadmap</span>
               </div>
+
+              <Link className="pill-btn talk-home-btn" to="/privacy-policy">
+                Privacy Policy <ArrowRight size={16} />
+              </Link>
             </aside>
           </div>
         </section>

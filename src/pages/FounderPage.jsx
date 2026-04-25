@@ -71,6 +71,9 @@ export default function FounderPage() {
             <a href="/#works" onClick={() => setIsMenuOpen(false)}>
               Selected Works
             </a>
+            <Link to="/privacy-policy" onClick={() => setIsMenuOpen(false)}>
+              Privacy Policy
+            </Link>
           </nav>
         </aside>
 
