@@ -7,6 +7,7 @@ import {
   ArrowRight,
   Calendar,
   CodeXml,
+  Github,
   Globe,
   Mail,
   Menu,
@@ -17,26 +18,36 @@ import {
   Smartphone,
   X,
 } from 'lucide-react'
-import logoPng from '../assets/zeileet logo.png'
+
+// Asset imports
+import mobileUiImg from '../assets/mobile_ui_screens.png'
+import isometricImg from '../assets/isometric_workspace.png'
+import dashboardImg from '../assets/dashboard_mockup.png'
 
 const serviceCards = [
   {
+    id: '01',
     icon: Globe,
     title: 'Web Platforms',
     description:
       'Business websites and custom web apps focused on speed, conversion, and clean user experience.',
+    tags: ['React', 'Vite', 'Next.js', 'Tailwind'],
   },
   {
+    id: '02',
     icon: Smartphone,
     title: 'Expo Mobile Apps',
     description:
       'Cross-platform Expo apps shipped to both Android and iOS with native-feeling UX and robust architecture.',
+    tags: ['Expo', 'React Native', 'iOS', 'Android'],
   },
   {
+    id: '03',
     icon: CodeXml,
     title: 'Product Engineering',
     description:
       'End-to-end product delivery from UX implementation to deployment pipelines and long-term maintenance.',
+    tags: ['UX/UI', 'Node.js', 'CI/CD', 'API Design'],
   },
 ]
 
@@ -45,24 +56,40 @@ const projects = [
     name: 'JkssbPrep',
     type: 'Exam preparation platform website',
     url: 'https://www.jkssbprep.in/',
+    icon: Globe,
+    tags: ['React', 'Vite', 'Tailwind', 'Vercel'],
   },
   {
     name: 'Nexa Commerce',
     type: 'Headless commerce website',
+    icon: CodeXml,
+    tags: ['Next.js', 'GraphQL', 'Stripe', 'Tailwind'],
   },
   {
     name: 'Stride Health',
     type: 'Expo app for Android & iOS',
+    icon: Smartphone,
+    tags: ['React Native', 'Expo', 'Redux', 'EAS'],
   },
   {
     name: 'Orbit Desk',
     type: 'Internal SaaS operations tool',
+    icon: Globe,
+    tags: ['Node.js', 'Express', 'PostgreSQL', 'Tailwind'],
   },
 ]
 
 export default function HomePage() {
   const pageRef = useRef(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState('home')
+  const [copied, setCopied] = useState(false)
+
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText('hello@zeileet.com')
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
 
   useLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
@@ -73,132 +100,56 @@ export default function HomePage() {
 
     const root = pageRef.current
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-
-      tl.from('.hero-shell', {
-        y: 34,
-        opacity: 0,
-        duration: 1,
-      })
-        .from(
-          '.cinematic-wipe',
-          {
-            yPercent: 0,
-            duration: 1.05,
-            ease: 'power4.inOut',
-          },
-          '<',
-        )
-        .from(
-          '.site-header, .hero-intro',
-          {
-            y: 24,
-            opacity: 0,
-            duration: 0.6,
-            stagger: 0.12,
-          },
-          '-=0.45',
-        )
-        .from(
-          '.hero-line',
-          {
-            yPercent: 100,
-            opacity: 0,
-            filter: 'blur(5px)',
-            duration: 0.7,
-            stagger: 0.08,
-          },
-          '-=0.35',
-        )
-        .from(
-          '.hero-copy, .hero-cta, .hero-mobile',
-          {
-            y: 20,
-            opacity: 0,
-            duration: 0.6,
-            stagger: 0.1,
-          },
-          '-=0.4',
-        )
-
-      gsap.utils.toArray('.section-block').forEach((section) => {
-        gsap.from(section, {
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 84%',
-          },
-          y: 52,
-          opacity: 0,
-          duration: 0.9,
-          ease: 'power3.out',
-        })
+      // Sync navigation active class on scroll
+      const sections = ['home', 'services', 'works', 'founder']
+      sections.forEach((sectionId) => {
+        const element = document.getElementById(sectionId)
+        if (element) {
+          ScrollTrigger.create({
+            trigger: element,
+            start: 'top 40%',
+            end: 'bottom 40%',
+            onEnter: () => setActiveSection(sectionId),
+            onEnterBack: () => setActiveSection(sectionId),
+          })
+        }
       })
 
-      gsap.from('.service-card', {
-        scrollTrigger: {
-          trigger: '.services-grid',
-          start: 'top 78%',
-        },
-        y: 32,
-        opacity: 0,
-        duration: 0.7,
-        stagger: 0.14,
-        ease: 'power2.out',
-      })
 
-      gsap.from('.project-item', {
-        scrollTrigger: {
-          trigger: '.projects-list',
-          start: 'top 84%',
-        },
-        x: -20,
-        opacity: 0,
-        duration: 0.55,
-        stagger: 0.12,
-      })
 
+      // Ambient Orbs & Light scroll animations
       if (!prefersReducedMotion) {
-        gsap.to('.hero-mobile', {
-          y: -40,
-          scrollTrigger: {
-            trigger: '.hero-shell',
-            start: 'top top',
-            end: 'bottom top',
-            scrub: 1.2,
-          },
-        })
-
         gsap.to('.motion-orb-a', {
-          x: 40,
-          y: -26,
-          scale: 1.06,
-          duration: 4.6,
+          x: 30,
+          y: -20,
+          scale: 1.05,
+          duration: 5,
           repeat: -1,
           yoyo: true,
           ease: 'sine.inOut',
         })
 
         gsap.to('.motion-orb-b', {
-          x: -44,
-          y: 22,
-          scale: 1.12,
-          duration: 5.3,
+          x: -30,
+          y: 15,
+          scale: 1.08,
+          duration: 6,
           repeat: -1,
           yoyo: true,
           ease: 'sine.inOut',
         })
 
         gsap.to('.motion-light', {
-          xPercent: 42,
-          duration: 7,
+          xPercent: 30,
+          duration: 8,
           repeat: -1,
           yoyo: true,
           ease: 'sine.inOut',
         })
       }
 
+      // Smooth scroll anchor link handler
       const anchorLinks = gsap.utils.toArray('a[href^="#"]')
-
       if (!prefersReducedMotion) {
         anchorLinks.forEach((link) => {
           const href = link.getAttribute('href')
@@ -213,12 +164,18 @@ export default function HomePage() {
 
           const handler = (event) => {
             event.preventDefault()
+            setIsMenuOpen(false)
+
+            // Set active state immediately on click
+            const sectionName = href.replace('#', '')
+            setActiveSection(sectionName)
+
             gsap.to(window, {
-              duration: 1.1,
+              duration: 0.9,
               ease: 'power3.inOut',
               scrollTo: {
                 y: target,
-                offsetY: 18,
+                offsetY: 20,
               },
             })
           }
@@ -228,17 +185,16 @@ export default function HomePage() {
         })
       }
 
-      if (!prefersReducedMotion) {
-        gsap.to('.section-rocket', {
-          y: -5,
-          rotate: 10,
-          scale: 1.08,
-          duration: 1.9,
-          repeat: -1,
-          yoyo: true,
-          ease: 'sine.inOut',
-          transformOrigin: '50% 65%',
-        })
+      // Robust ScrollTrigger refresh to prevent layout shifts from breaking scroll triggers
+      const refreshAll = () => {
+        ScrollTrigger.refresh()
+      }
+      window.addEventListener('load', refreshAll)
+      const timer = setTimeout(refreshAll, 1200)
+
+      return () => {
+        window.removeEventListener('load', refreshAll)
+        clearTimeout(timer)
       }
     }, root)
 
@@ -273,18 +229,32 @@ export default function HomePage() {
         <span className="motion-orb motion-orb-b" />
         <span className="motion-light" />
       </div>
-      <div className="cinematic-wipe" aria-hidden="true" />
+
 
       <main className="hero-shell">
         <header className="site-header">
           <a className="logo" href="#home">
-            <img className="brand-logo" src={logoPng} alt="Zeileet logo" />
-            zeileet.
+            zeileet<span className="logo-dot">.</span>
           </a>
 
+          <nav className="header-nav" aria-label="Primary">
+            <a className={`nav-link ${activeSection === 'home' ? 'active' : ''}`} href="#home">
+              Home
+            </a>
+            <a className={`nav-link ${activeSection === 'works' ? 'active' : ''}`} href="#works">
+              Works
+            </a>
+            <a className={`nav-link ${activeSection === 'services' ? 'active' : ''}`} href="#services">
+              Services
+            </a>
+            <a className={`nav-link ${activeSection === 'founder' ? 'active' : ''}`} href="#founder">
+              About me
+            </a>
+          </nav>
+
           <div className="header-actions">
-            <a className="pill-btn" href="#hey-there">
-              Hey There <MessageCircle size={17} strokeWidth={2.2} />
+            <a className="cta-blue" href="#hey-there">
+              LET&apos;S TALK
             </a>
             <button
               className="icon-btn"
@@ -293,6 +263,7 @@ export default function HomePage() {
               aria-expanded={isMenuOpen}
               aria-controls="site-menu"
               onClick={() => setIsMenuOpen((prev) => !prev)}
+              style={{ display: window.innerWidth <= 860 ? 'inline-flex' : 'none' }}
             >
               {isMenuOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
@@ -311,20 +282,20 @@ export default function HomePage() {
           aria-hidden={!isMenuOpen}
         >
           <p className="menu-label">Navigation</p>
-          <nav className="menu-links" aria-label="Primary">
-            <a href="#home" onClick={() => setIsMenuOpen(false)}>
+          <nav className="menu-links" aria-label="Primary Mobile">
+            <a href="#home" onClick={() => { setIsMenuOpen(false); setActiveSection('home'); }}>
               Home
             </a>
-            <a href="#founder" onClick={() => setIsMenuOpen(false)}>
-              Founder
+            <a href="#founder" onClick={() => { setIsMenuOpen(false); setActiveSection('founder'); }}>
+              About me
             </a>
-            <a href="#hey-there" onClick={() => setIsMenuOpen(false)}>
-              <MessageCircle size={16} /> Hey There
+            <a href="#hey-there" onClick={() => { setIsMenuOpen(false); }}>
+              <MessageCircle size={16} /> Let&apos;s Talk
             </a>
-            <a href="#services" onClick={() => setIsMenuOpen(false)}>
+            <a href="#services" onClick={() => { setIsMenuOpen(false); setActiveSection('services'); }}>
               Services
             </a>
-            <a href="#works" onClick={() => setIsMenuOpen(false)}>
+            <a href="#works" onClick={() => { setIsMenuOpen(false); setActiveSection('works'); }}>
               Selected Works
             </a>
             <Link to="/privacy-policy" onClick={() => setIsMenuOpen(false)}>
@@ -342,34 +313,79 @@ export default function HomePage() {
           </div>
         </aside>
 
+        {/* Hero Section */}
         <section className="hero" id="home">
-          <p className="hero-intro">Hello! We are Zeileet.</p>
+          <div className="hero-grid">
 
-          <h1 className="hero-title">
-            <span className="hero-line">Designing and building software products</span>
-            <span className="hero-line">for web and mobile with</span>
-            <span className="hero-line hero-line-muted">sharp focus.</span>
-          </h1>
+            {/* Left Column */}
+            <div className="hero-left">
+              <p className="hero-intro">Hello, We are</p>
+              <h1 className="hero-title">ZEILEET.</h1>
+              <p className="hero-copy">
+                We design and build software products for web and mobile with sharp focus.
+                We turn ideas into production-ready digital products that connect people and drive growth.
+              </p>
 
-          <div className="hero-meta">
-            <a className="cta-dark hero-cta" href="#hey-there">
-              Start a Project <ArrowRight size={18} />
-            </a>
+              <div className="email-pill-container">
+                <span className="email-text">hello@zeileet.com</span>
+                <button className="email-copy-btn" onClick={handleCopyEmail}>
+                  {copied ? 'Copied!' : 'Copy'}
+                </button>
+              </div>
+
+              <div className="hero-contacts">
+                <a className="contact-btn contact-btn-blue" href="mailto:hello@zeileet.com" title="Email Us">
+                  <Mail size={20} />
+                </a>
+                <a className="contact-btn contact-btn-light" href="https://zeileet.com" target="_blank" rel="noreferrer" title="Our Website">
+                  <Globe size={20} />
+                </a>
+                <a className="contact-btn contact-btn-light" href="https://github.com" target="_blank" rel="noreferrer" title="Github">
+                  <Github size={20} />
+                </a>
+              </div>
+            </div>
+
+
+            {/* Right Column */}
+            <div className="hero-right">
+              <div className="collage-container">
+                
+                {/* Card 1: UI/UX Design */}
+                <div className="collage-card card-uiux">
+                  <img src={mobileUiImg} alt="UI/UX Design" />
+                  <div className="card-label-tab">
+                    <span className="logo-dot">●</span> UI/UX Design
+                  </div>
+                </div>
+
+                {/* Card 2: Web Platforms */}
+                <div className="collage-card card-web">
+                  <img src={dashboardImg} alt="Web Platforms" />
+                  <div className="card-label-tab">
+                    <span className="logo-dot">●</span> Web Platforms
+                  </div>
+                </div>
+
+                {/* Card 3: Expo Mobile Apps */}
+                <div className="collage-card card-mobile">
+                  <img src={isometricImg} alt="Expo Mobile Apps" />
+                  <div className="card-label-tab">
+                    <span className="logo-dot">●</span> Expo Mobile Apps
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
           </div>
-
-          <aside className="hero-mobile" aria-hidden="true">
-            <div className="phone-notch" />
-            <p className="phone-eyebrow">zeileet.</p>
-            <p className="phone-heading">Web + Mobile</p>
-            <p className="phone-highlight">Expo apps</p>
-            <p className="phone-small">Android and iOS ready</p>
-          </aside>
         </section>
 
+        {/* Services Section */}
         <section className="section-block" id="services">
           <div className="section-title-row">
             <h2>What we do</h2>
-            <Rocket className="section-rocket" size={20} />
+            <Rocket className="section-rocket" size={24} />
           </div>
 
           <div className="services-grid">
@@ -377,53 +393,103 @@ export default function HomePage() {
               const Icon = item.icon
               return (
                 <article className="service-card" key={item.title}>
+                  <span className="service-number">{item.id}</span>
                   <div className="service-icon-wrap">
-                    <Icon size={20} />
+                    <Icon size={22} />
                   </div>
                   <h3>{item.title}</h3>
                   <p>{item.description}</p>
+                  
+                  <div className="service-tags">
+                    {item.tags.map((tag) => (
+                      <span key={tag} className="service-tag">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </article>
               )
             })}
           </div>
         </section>
 
+        {/* Selected Works Section */}
         <section className="section-block projects-block" id="works">
-          <h2>Selected works</h2>
-          <div className="projects-list">
-            {projects.map((project) => (
-              <article className="project-item" key={project.name}>
-                <h3>
-                  {project.url ? (
-                    <a
-                      className="project-link"
-                      href={project.url}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {project.name}
-                    </a>
-                  ) : (
-                    project.name
-                  )}
-                </h3>
-                <p>{project.type}</p>
-                {project.url ? (
-                  <a href={project.url} target="_blank" rel="noreferrer" aria-label={`Open ${project.name}`}>
-                    <ArrowRight size={16} />
-                  </a>
-                ) : (
-                  <ArrowRight size={16} />
-                )}
-              </article>
-            ))}
+          <div className="section-title-row">
+            <h2>Selected works</h2>
+          </div>
+          
+          <div className="projects-grid">
+            {projects.map((project) => {
+              const Icon = project.icon
+              return (
+                <article className="project-card" key={project.name}>
+                  <span className="project-monogram">{project.name[0]}</span>
+                  
+                  <header className="project-card-header">
+                    <div className="project-icon-wrap">
+                      <Icon size={20} />
+                    </div>
+                    {project.url ? (
+                      <span className="project-status-badge">Live Project</span>
+                    ) : (
+                      <span className="project-status-badge status-internal">Internal Tool</span>
+                    )}
+                  </header>
+
+                  <div className="project-card-content">
+                    <h3>
+                      {project.url ? (
+                        <a
+                          className="project-link"
+                          href={project.url}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {project.name}
+                        </a>
+                      ) : (
+                        project.name
+                      )}
+                    </h3>
+                    <p className="project-desc">{project.type}</p>
+                  </div>
+
+                  <footer className="project-card-footer">
+                    <div className="project-tags">
+                      {project.tags.map((tag) => (
+                        <span key={tag} className="project-tag">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    {project.url ? (
+                      <a 
+                        className="project-action-btn" 
+                        href={project.url} 
+                        target="_blank" 
+                        rel="noreferrer"
+                        aria-label={`Visit ${project.name}`}
+                      >
+                        Visit <ArrowRight size={14} />
+                      </a>
+                    ) : (
+                      <span className="project-action-btn action-inactive">
+                        Active <ArrowRight size={14} />
+                      </span>
+                    )}
+                  </footer>
+                </article>
+              )
+            })}
           </div>
         </section>
 
+        {/* Founder Section */}
         <section className="section-block" id="founder">
           <div className="founder-hero">
             <p className="founder-eyebrow">
-              <Sparkles size={16} /> Founder Story
+              <Sparkles size={15} /> Founder Story
             </p>
             <h2 className="founder-title">Built remote-first, led by product obsession.</h2>
             <p className="founder-copy">
@@ -448,10 +514,11 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Contact Section */}
         <section className="section-block" id="hey-there">
           <div className="talk-hero">
             <p className="talk-eyebrow">
-              <MessageCircle size={15} /> Hey There
+              <MessageCircle size={14} /> Hey There
             </p>
             <h2 className="talk-title">Tell us what you want to build.</h2>
             <p className="talk-copy">

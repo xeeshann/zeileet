@@ -62,7 +62,7 @@ export default function AccountDeletionRequestPage() {
       <main className="hero-shell deletion-shell">
         <header className="site-header">
           <Link className="logo" to="/">
-            zeileet.
+            zeileet<span className="logo-dot">.</span>
           </Link>
 
           <div className="header-actions">
