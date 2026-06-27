@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { ArrowRight, ShieldCheck } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
@@ -55,21 +56,23 @@ const policySections = [
 export default function PrivacyPolicyPage() {
   return (
     <div className="page">
-      <main className="hero-shell privacy-shell">
-        <header className="site-header">
-          <Link className="logo" to="/">
-            zeileet<span className="logo-dot">.</span>
-          </Link>
+      <header className="site-header">
+        <Link className="logo" to="/">
+          zeileet<span className="logo-dot">.</span>
+        </Link>
 
-          <div className="header-actions">
-            <Link className="pill-btn" to="/account-deletion-request">
-              Delete Account <ArrowRight size={18} strokeWidth={2.2} />
-            </Link>
-            <Link className="pill-btn" to="/">
-              Back Home <ArrowRight size={18} strokeWidth={2.2} />
-            </Link>
-          </div>
-        </header>
+        <div className="header-actions">
+          <Link className="pill-btn" to="/account-deletion-request">
+            Delete Account <ArrowRight size={18} strokeWidth={2.2} />
+          </Link>
+          <Link className="pill-btn" to="/">
+            Back Home <ArrowRight size={18} strokeWidth={2.2} />
+          </Link>
+        </div>
+      </header>
+
+      <main className="hero-shell privacy-shell">
+        <div className="hero-shell-clip-bg" aria-hidden="true" />
 
         <section className="privacy-hero">
           <p className="privacy-eyebrow">
@@ -95,7 +98,7 @@ export default function PrivacyPolicyPage() {
           <h2>13. Contact us</h2>
           <p>
             For privacy questions or requests, contact us at{' '}
-            <a href="mailto:hello@zeileet.com">hello@zeileet.com</a>.
+            <a href="mailto:zeileet3@gmail.com">zeileet3@gmail.com</a>.
           </p>
           <p>
             For account deletion requests across any Zeileet product, use the{' '}

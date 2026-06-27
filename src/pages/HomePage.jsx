@@ -21,7 +21,7 @@ import {
 
 // Asset imports
 import mobileUiImg from '../assets/mobile_ui_screens.png'
-import isometricImg from '../assets/isometric_workspace.png'
+import isometricImg from '../assets/isometric_workspace.jpg'
 import dashboardImg from '../assets/dashboard_mockup.png'
 
 const serviceCards = [
@@ -60,35 +60,97 @@ const projects = [
     tags: ['React', 'Vite', 'Tailwind', 'Vercel'],
   },
   {
-    name: 'Nexa Commerce',
-    type: 'Headless commerce website',
+    name: 'Getusefeed',
+    type: 'Feature voting and product roadmap',
+    url: 'https://getusefeed.com/',
     icon: CodeXml,
     tags: ['Next.js', 'GraphQL', 'Stripe', 'Tailwind'],
   },
   {
-    name: 'Stride Health',
-    type: 'Expo app for Android & iOS',
+    name: 'Jkssbprep App',
+    type: 'Expo app for Android',
+    url: 'https://play.google.com/store/apps/details?id=com.jkssbprep.app',
     icon: Smartphone,
     tags: ['React Native', 'Expo', 'Redux', 'EAS'],
-  },
-  {
-    name: 'Orbit Desk',
-    type: 'Internal SaaS operations tool',
-    icon: Globe,
-    tags: ['Node.js', 'Express', 'PostgreSQL', 'Tailwind'],
   },
 ]
 
 export default function HomePage() {
   const pageRef = useRef(null)
+  const navRef = useRef(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
   const [copied, setCopied] = useState(false)
+  const [hoveredSection, setHoveredSection] = useState(null)
+  const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0, opacity: 0 })
+  const [formStatus, setFormStatus] = useState(null)
+  const [formMessage, setFormMessage] = useState('')
+
+
+  // Calculate sliding pill coordinates
+  useLayoutEffect(() => {
+    const container = navRef.current
+    if (!container) return
+
+    const updatePosition = () => {
+      const targetSection = hoveredSection || activeSection
+      const targetLink = container.querySelector(`[data-section="${targetSection}"]`)
+
+      if (targetLink) {
+        setIndicatorStyle({
+          left: targetLink.offsetLeft,
+          width: targetLink.offsetWidth,
+          opacity: 1,
+        })
+      } else {
+        setIndicatorStyle((prev) => ({ ...prev, opacity: 0 }))
+      }
+    }
+
+    updatePosition()
+
+    window.addEventListener('resize', updatePosition)
+    return () => window.removeEventListener('resize', updatePosition)
+  }, [activeSection, hoveredSection])
 
   const handleCopyEmail = () => {
-    navigator.clipboard.writeText('hello@zeileet.com')
+    navigator.clipboard.writeText('zeileet3@gmail.com')
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+  }
+
+  const handleContactSubmit = async (event) => {
+    event.preventDefault()
+    setFormStatus('submitting')
+    setFormMessage('')
+
+    try {
+      const formData = new FormData(event.currentTarget)
+      
+      const web3FormsKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || 'YOUR_ACCESS_KEY_HERE'
+      formData.append('access_key', web3FormsKey)
+      formData.append('subject', 'New Project Brief from Zeileet Portfolio')
+      formData.append('from_name', 'Zeileet Contact Form')
+
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData,
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        setFormStatus('success')
+        setFormMessage('Thank you! Your inquiry has been sent successfully. We will get back to you soon.')
+        event.target.reset()
+      } else {
+        setFormStatus('error')
+        setFormMessage(result.message || 'Something went wrong. Please try again.')
+      }
+    } catch (error) {
+      setFormStatus('error')
+      setFormMessage('Failed to connect to the server. Please check your network and try again.')
+    }
   }
 
   useLayoutEffect(() => {
@@ -223,7 +285,7 @@ export default function HomePage() {
   }, [isMenuOpen])
 
   return (
-    <div className="page" ref={pageRef}>
+    <div className="page home-page" ref={pageRef}>
       <div className="motion-canvas" aria-hidden="true">
         <span className="motion-orb motion-orb-a" />
         <span className="motion-orb motion-orb-b" />
@@ -231,87 +293,119 @@ export default function HomePage() {
       </div>
 
 
-      <main className="hero-shell">
-        <header className="site-header">
-          <a className="logo" href="#home">
-            zeileet<span className="logo-dot">.</span>
-          </a>
+      <header className="site-header">
+        <a className="logo" href="#home">
+          zeileet<span className="logo-dot">.</span>
+        </a>
 
-          <nav className="header-nav" aria-label="Primary">
-            <a className={`nav-link ${activeSection === 'home' ? 'active' : ''}`} href="#home">
-              Home
-            </a>
-            <a className={`nav-link ${activeSection === 'works' ? 'active' : ''}`} href="#works">
-              Works
-            </a>
-            <a className={`nav-link ${activeSection === 'services' ? 'active' : ''}`} href="#services">
-              Services
-            </a>
-            <a className={`nav-link ${activeSection === 'founder' ? 'active' : ''}`} href="#founder">
-              About me
-            </a>
-          </nav>
-
-          <div className="header-actions">
-            <a className="cta-blue" href="#hey-there">
-              LET&apos;S TALK
-            </a>
-            <button
-              className="icon-btn"
-              type="button"
-              aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-              aria-expanded={isMenuOpen}
-              aria-controls="site-menu"
-              onClick={() => setIsMenuOpen((prev) => !prev)}
-              style={{ display: window.innerWidth <= 860 ? 'inline-flex' : 'none' }}
-            >
-              {isMenuOpen ? <X size={18} /> : <Menu size={18} />}
-            </button>
-          </div>
-        </header>
-
-        <div
-          className={`menu-backdrop ${isMenuOpen ? 'is-open' : ''}`}
-          aria-hidden="true"
-          onClick={() => setIsMenuOpen(false)}
-        />
-
-        <aside
-          id="site-menu"
-          className={`menu-panel ${isMenuOpen ? 'is-open' : ''}`}
-          aria-hidden={!isMenuOpen}
+        <nav
+          ref={navRef}
+          className="header-nav"
+          aria-label="Primary"
+          onMouseLeave={() => setHoveredSection(null)}
         >
-          <p className="menu-label">Navigation</p>
-          <nav className="menu-links" aria-label="Primary Mobile">
-            <a href="#home" onClick={() => { setIsMenuOpen(false); setActiveSection('home'); }}>
-              Home
-            </a>
-            <a href="#founder" onClick={() => { setIsMenuOpen(false); setActiveSection('founder'); }}>
-              About me
-            </a>
-            <a href="#hey-there" onClick={() => { setIsMenuOpen(false); }}>
-              <MessageCircle size={16} /> Let&apos;s Talk
-            </a>
-            <a href="#services" onClick={() => { setIsMenuOpen(false); setActiveSection('services'); }}>
-              Services
-            </a>
-            <a href="#works" onClick={() => { setIsMenuOpen(false); setActiveSection('works'); }}>
-              Selected Works
-            </a>
-            <Link to="/privacy-policy" onClick={() => setIsMenuOpen(false)}>
-              Privacy Policy
-            </Link>
-            <Link to="/account-deletion-request" onClick={() => setIsMenuOpen(false)}>
-              Account Deletion
-            </Link>
-          </nav>
-          <div className="menu-card">
-            <p>Let&apos;s build your next website or Expo app together.</p>
-            <a className="cta-dark" href="#hey-there" onClick={() => setIsMenuOpen(false)}>
-              Book a Call <ArrowRight size={17} />
-            </a>
-          </div>
-        </aside>
+          <div
+            className="nav-indicator-pill"
+            style={{
+              left: `${indicatorStyle.left}px`,
+              width: `${indicatorStyle.width}px`,
+              opacity: indicatorStyle.opacity,
+            }}
+          />
+          <a
+            data-section="home"
+            className={`nav-link ${activeSection === 'home' ? 'active' : ''}`}
+            href="#home"
+            onMouseEnter={() => setHoveredSection('home')}
+          >
+            Home
+          </a>
+          <a
+            data-section="works"
+            className={`nav-link ${activeSection === 'works' ? 'active' : ''}`}
+            href="#works"
+            onMouseEnter={() => setHoveredSection('works')}
+          >
+            Works
+          </a>
+          <a
+            data-section="services"
+            className={`nav-link ${activeSection === 'services' ? 'active' : ''}`}
+            href="#services"
+            onMouseEnter={() => setHoveredSection('services')}
+          >
+            Services
+          </a>
+          <a
+            data-section="founder"
+            className={`nav-link ${activeSection === 'founder' ? 'active' : ''}`}
+            href="#founder"
+            onMouseEnter={() => setHoveredSection('founder')}
+          >
+            About me
+          </a>
+        </nav>
+
+        <div className="header-actions">
+          <button
+            className="icon-btn"
+            type="button"
+            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isMenuOpen}
+            aria-controls="site-menu"
+            onClick={() => setIsMenuOpen((prev) => !prev)}
+            style={{ display: window.innerWidth <= 860 ? 'inline-flex' : 'none' }}
+          >
+            {isMenuOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        </div>
+      </header>
+
+      <div
+        className={`menu-backdrop ${isMenuOpen ? 'is-open' : ''}`}
+        aria-hidden="true"
+        onClick={() => setIsMenuOpen(false)}
+      />
+
+      <aside
+        id="site-menu"
+        className={`menu-panel ${isMenuOpen ? 'is-open' : ''}`}
+        aria-hidden={!isMenuOpen}
+      >
+        <p className="menu-label">Navigation</p>
+        <nav className="menu-links" aria-label="Primary Mobile">
+          <a href="#home" onClick={() => { setIsMenuOpen(false); setActiveSection('home'); }}>
+            Home
+          </a>
+          <a href="#founder" onClick={() => { setIsMenuOpen(false); setActiveSection('founder'); }}>
+            About me
+          </a>
+          <a href="#hey-there" onClick={() => { setIsMenuOpen(false); }}>
+            <MessageCircle size={16} /> Let&apos;s Talk
+          </a>
+          <a href="#services" onClick={() => { setIsMenuOpen(false); setActiveSection('services'); }}>
+            Services
+          </a>
+          <a href="#works" onClick={() => { setIsMenuOpen(false); setActiveSection('works'); }}>
+            Selected Works
+          </a>
+          <Link to="/privacy-policy" onClick={() => setIsMenuOpen(false)}>
+            Privacy Policy
+          </Link>
+          <Link to="/account-deletion-request" onClick={() => setIsMenuOpen(false)}>
+            Account Deletion
+          </Link>
+        </nav>
+        <div className="menu-card">
+          <p>Let&apos;s build your next website or Expo app together.</p>
+          <a className="cta-dark" href="#hey-there" onClick={() => setIsMenuOpen(false)}>
+            Book a Call <ArrowRight size={17} />
+          </a>
+        </div>
+      </aside>
+
+      <main className="hero-shell">
+        <div className="hero-shell-clip-bg" aria-hidden="true" />
 
         {/* Hero Section */}
         <section className="hero" id="home">
@@ -327,21 +421,15 @@ export default function HomePage() {
               </p>
 
               <div className="email-pill-container">
-                <span className="email-text">hello@zeileet.com</span>
+                <span className="email-text">zeileet3@gmail.com</span>
                 <button className="email-copy-btn" onClick={handleCopyEmail}>
                   {copied ? 'Copied!' : 'Copy'}
                 </button>
               </div>
 
               <div className="hero-contacts">
-                <a className="contact-btn contact-btn-blue" href="mailto:hello@zeileet.com" title="Email Us">
+                <a className="contact-btn contact-btn-blue" href="mailto:zeileet3@gmail.com" title="Email Us">
                   <Mail size={20} />
-                </a>
-                <a className="contact-btn contact-btn-light" href="https://zeileet.com" target="_blank" rel="noreferrer" title="Our Website">
-                  <Globe size={20} />
-                </a>
-                <a className="contact-btn contact-btn-light" href="https://github.com" target="_blank" rel="noreferrer" title="Github">
-                  <Github size={20} />
                 </a>
               </div>
             </div>
@@ -350,7 +438,7 @@ export default function HomePage() {
             {/* Right Column */}
             <div className="hero-right">
               <div className="collage-container">
-                
+
                 {/* Card 1: UI/UX Design */}
                 <div className="collage-card card-uiux">
                   <img src={mobileUiImg} alt="UI/UX Design" />
@@ -399,7 +487,7 @@ export default function HomePage() {
                   </div>
                   <h3>{item.title}</h3>
                   <p>{item.description}</p>
-                  
+
                   <div className="service-tags">
                     {item.tags.map((tag) => (
                       <span key={tag} className="service-tag">
@@ -418,14 +506,14 @@ export default function HomePage() {
           <div className="section-title-row">
             <h2>Selected works</h2>
           </div>
-          
+
           <div className="projects-grid">
             {projects.map((project) => {
               const Icon = project.icon
               return (
                 <article className="project-card" key={project.name}>
                   <span className="project-monogram">{project.name[0]}</span>
-                  
+
                   <header className="project-card-header">
                     <div className="project-icon-wrap">
                       <Icon size={20} />
@@ -464,10 +552,10 @@ export default function HomePage() {
                       ))}
                     </div>
                     {project.url ? (
-                      <a 
-                        className="project-action-btn" 
-                        href={project.url} 
-                        target="_blank" 
+                      <a
+                        className="project-action-btn"
+                        href={project.url}
+                        target="_blank"
                         rel="noreferrer"
                         aria-label={`Visit ${project.name}`}
                       >
@@ -489,11 +577,11 @@ export default function HomePage() {
         <section className="section-block" id="founder">
           <div className="founder-hero">
             <p className="founder-eyebrow">
-              <Sparkles size={15} /> Founder Story
+              Founder Story
             </p>
             <h2 className="founder-title">Built remote-first, led by product obsession.</h2>
             <p className="founder-copy">
-              Founder and CEO, also Developer, is ZEESHAN TEELI. Zeileet is led with a
+              Founder & Developer, is ZEESHAN. Zeileet is led with a
               hands-on product mindset focused on turning ideas into production-ready
               digital products for web and mobile.
             </p>
@@ -530,18 +618,19 @@ export default function HomePage() {
           <div className="talk-grid">
             <div className="talk-card">
               <h2>Project Brief</h2>
-              <form className="talk-form" onSubmit={(event) => event.preventDefault()}>
+              <form className="talk-form" onSubmit={handleContactSubmit}>
+                <input type="checkbox" name="botcheck" className="hidden" style={{ display: 'none' }} />
                 <label>
                   Full Name
-                  <input type="text" placeholder="Your name" />
+                  <input type="text" name="name" required placeholder="Your name" />
                 </label>
                 <label>
                   Email
-                  <input type="email" placeholder="you@company.com" />
+                  <input type="email" name="email" required placeholder="you@company.com" />
                 </label>
                 <label>
                   Project Type
-                  <select defaultValue="Website">
+                  <select name="project_type" defaultValue="Website">
                     <option>Website</option>
                     <option>Expo App (Android + iOS)</option>
                     <option>Website + Mobile App</option>
@@ -550,13 +639,22 @@ export default function HomePage() {
                 <label>
                   Message
                   <textarea
+                    name="message"
+                    required
                     rows="5"
                     placeholder="Tell us about your product, features, and expected deadline."
                   />
                 </label>
-                <button className="cta-dark" type="submit">
-                  Send Inquiry <ArrowRight size={17} />
+                <button className="cta-dark" type="submit" disabled={formStatus === 'submitting'}>
+                  {formStatus === 'submitting' ? 'Sending...' : 'Send'} <ArrowRight size={17} />
                 </button>
+
+                {formStatus === 'success' && (
+                  <div className="form-success">{formMessage}</div>
+                )}
+                {formStatus === 'error' && (
+                  <div className="form-error">{formMessage}</div>
+                )}
               </form>
             </div>
 
@@ -564,7 +662,7 @@ export default function HomePage() {
               <h2>Contact</h2>
               <div className="talk-line">
                 <Mail size={18} />
-                <span>hello@zeileet.com</span>
+                <span>zeileet3@gmail.com</span>
               </div>
               <div className="talk-line">
                 <Phone size={18} />

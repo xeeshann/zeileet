@@ -4,21 +4,22 @@ import { Link } from 'react-router-dom'
 export default function LetsTalkPage() {
   return (
     <div className="page">
-      <main className="hero-shell talk-shell">
-        <header className="site-header">
-          <Link className="logo" to="/">
-            zeileet.
-          </Link>
+      <header className="site-header">
+        <Link className="logo" to="/">
+          zeileet.
+        </Link>
 
-          <div className="header-actions">
-            <Link className="pill-btn" to="/privacy-policy">
-              Privacy Policy <ArrowRight size={18} strokeWidth={2.2} />
-            </Link>
-            <Link className="pill-btn" to="/founder">
-              Founder <ArrowRight size={18} strokeWidth={2.2} />
-            </Link>
-          </div>
-        </header>
+        <div className="header-actions">
+          <Link className="pill-btn" to="/privacy-policy">
+            Privacy Policy <ArrowRight size={18} strokeWidth={2.2} />
+          </Link>
+          <Link className="pill-btn" to="/founder">
+            Founder <ArrowRight size={18} strokeWidth={2.2} />
+          </Link>
+        </div>
+      </header>
+
+      <main className="hero-shell talk-shell">
 
         <section className="talk-hero">
           <p className="talk-eyebrow">
@@ -68,7 +69,7 @@ export default function LetsTalkPage() {
             <h2>Contact</h2>
             <div className="talk-line">
               <Mail size={18} />
-              <span>hello@zeileet.com</span>
+              <span>zeileet3@gmail.com</span>
             </div>
             <div className="talk-line">
               <Phone size={18} />

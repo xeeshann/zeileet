@@ -1,5 +1,5 @@
 import { ArrowRight, ShieldAlert } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 function makeRequestId() {
@@ -15,6 +15,7 @@ export default function AccountDeletionRequestPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState('')
+
 
   const onSubmit = async (event) => {
     event.preventDefault()
@@ -52,25 +53,27 @@ export default function AccountDeletionRequestPage() {
     } catch {
       setIsSubmitting(false)
       setSubmitError(
-       
+
       )
     }
   }
 
   return (
     <div className="page">
-      <main className="hero-shell deletion-shell">
-        <header className="site-header">
-          <Link className="logo" to="/">
-            zeileet<span className="logo-dot">.</span>
-          </Link>
+      <header className="site-header">
+        <Link className="logo" to="/">
+          zeileet<span className="logo-dot">.</span>
+        </Link>
 
-          <div className="header-actions">
-            <Link className="pill-btn" to="/privacy-policy">
-              Privacy Policy <ArrowRight size={18} strokeWidth={2.2} />
-            </Link>
-          </div>
-        </header>
+        <div className="header-actions">
+          <Link className="pill-btn" to="/privacy-policy">
+            Privacy Policy <ArrowRight size={18} strokeWidth={2.2} />
+          </Link>
+        </div>
+      </header>
+
+      <main className="hero-shell deletion-shell">
+        <div className="hero-shell-clip-bg" aria-hidden="true" />
 
         <section className="deletion-hero">
           <p className="deletion-eyebrow">
@@ -191,8 +194,8 @@ export default function AccountDeletionRequestPage() {
             <h3>Direct support</h3>
             <p>
               If the form is unavailable, email{' '}
-              <a href="mailto:hello@zeileet.com?subject=Account%20Deletion%20Request">
-                hello@zeileet.com
+              <a href="mailto:zeileet3@gmail.com?subject=Account%20Deletion%20Request">
+                zeileet3@gmail.com
               </a>{' '}
               with your product details and account email.
             </p>

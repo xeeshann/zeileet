@@ -23,28 +23,29 @@ export default function FounderPage() {
 
   return (
     <div className="page">
-      <main className="hero-shell founder-shell">
-        <header className="site-header">
-          <Link className="logo" to="/">
-            zeileet.
-          </Link>
+      <header className="site-header">
+        <Link className="logo" to="/">
+          zeileet.
+        </Link>
 
-          <div className="header-actions">
-            <Link className="pill-btn" to="/">
-              Back Home <ArrowRight size={18} strokeWidth={2.2} />
-            </Link>
-            <button
-              className="icon-btn"
-              type="button"
-              aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-              aria-expanded={isMenuOpen}
-              aria-controls="site-menu-founder"
-              onClick={() => setIsMenuOpen((prev) => !prev)}
-            >
-              {isMenuOpen ? <X size={18} /> : <Menu size={18} />}
-            </button>
-          </div>
-        </header>
+        <div className="header-actions">
+          <Link className="pill-btn" to="/">
+            Back Home <ArrowRight size={18} strokeWidth={2.2} />
+          </Link>
+          <button
+            className="icon-btn"
+            type="button"
+            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isMenuOpen}
+            aria-controls="site-menu-founder"
+            onClick={() => setIsMenuOpen((prev) => !prev)}
+          >
+            {isMenuOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        </div>
+      </header>
+
+      <main className="hero-shell founder-shell">
 
         <div
           className={`menu-backdrop ${isMenuOpen ? 'is-open' : ''}`}
@@ -83,7 +84,7 @@ export default function FounderPage() {
           </p>
           <h1 className="founder-title">Built remote-first, led by product obsession.</h1>
           <p className="founder-copy">
-            Founder and CEO, also Developer, is ZEESHAN TEELI. Zeileet is led with a
+            Founder & Developer, is ZEESHAN. Zeileet is led with a
             hands-on product mindset focused on turning ideas into production-ready
             digital products for web and mobile.
           </p>
