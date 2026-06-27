@@ -58,7 +58,7 @@ export default function PrivacyPolicyPage() {
       <main className="hero-shell privacy-shell">
         <header className="site-header">
           <Link className="logo" to="/">
-            zeileet.
+            zeileet<span className="logo-dot">.</span>
           </Link>
 
           <div className="header-actions">
