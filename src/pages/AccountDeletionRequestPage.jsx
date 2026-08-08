@@ -195,7 +195,7 @@ export default function AccountDeletionRequestPage() {
             <p>
               If the form is unavailable, email{' '}
               <a href="mailto:zeileet3@gmail.com?subject=Account%20Deletion%20Request">
-                zeileet3@gmail.com
+                contact@zeileet.in
               </a>{' '}
               with your product details and account email.
             </p>

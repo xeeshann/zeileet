@@ -6,17 +6,24 @@ import { Link } from 'react-router-dom'
 import {
   ArrowRight,
   Calendar,
+  CheckCircle2,
   CodeXml,
+  ExternalLink,
+  Eye,
+  Filter,
   Github,
   Globe,
+  Layers,
   Mail,
   Menu,
   MessageCircle,
   Phone,
   Rocket,
-  Sparkles,
   Smartphone,
+  Sparkles,
+  Star,
   X,
+  Zap,
 } from 'lucide-react'
 
 // Asset imports
@@ -51,27 +58,97 @@ const serviceCards = [
   },
 ]
 
+const projectCategories = [
+  { key: 'all', label: 'All Works' },
+  { key: 'web', label: 'Web Platforms' },
+  { key: 'mobile', label: 'Mobile Apps' },
+  { key: 'saas', label: 'SaaS & Tools' },
+]
+
 const projects = [
   {
+    id: 'jkssbprep',
     name: 'JkssbPrep',
-    type: 'Exam preparation platform website',
+    category: 'web',
+    categoryLabel: 'Web Platform',
+    type: 'Exam Preparation Suite',
+    description:
+      'High-performance online examination suite featuring practice test series, instant scorecard analytics, and progress tracking for over 50,000 students.',
     url: 'https://www.jkssbprep.in/',
     icon: Globe,
-    tags: ['React', 'Vite', 'Tailwind', 'Vercel'],
+    badge: 'Live Platform',
+    badgeType: 'live',
+    featured: true,
+    metrics: '50k+ Active Aspirants',
+    tags: ['React', 'Vite', 'Tailwind CSS', 'Vercel'],
+    highlights: [
+      'Interactive mock tests with timer & negative marking',
+      'Real-time percentile ranking & speed analytics',
+      'Automated result breakdown by subject & topic',
+    ],
   },
   {
+    id: 'getusefeed',
     name: 'Getusefeed',
-    type: 'Feature voting and product roadmap',
+    category: 'saas',
+    categoryLabel: 'SaaS & Product',
+    type: 'Feature Voting & Roadmaps',
+    description:
+      'Turn customer feedback into actionable product direction. Simple upvote boards, status columns, and interactive public product roadmaps.',
     url: 'https://getusefeed.com/',
     icon: CodeXml,
+    badge: 'SaaS Tool',
+    badgeType: 'saas',
+    featured: true,
+    metrics: 'Real-time Upvoting',
     tags: ['Next.js', 'GraphQL', 'Stripe', 'Tailwind'],
+    highlights: [
+      'Instant feature upvoting with single-sign-on',
+      'Customizable status workflows & release changelogs',
+      'Integrated Stripe subscription management',
+    ],
   },
   {
+    id: 'jkssbprep-app',
     name: 'Jkssbprep App',
-    type: 'Expo app for Android',
+    category: 'mobile',
+    categoryLabel: 'Expo Mobile App',
+    type: 'Android & iOS Learning App',
+    description:
+      'Native-feeling mobile learning application empowering candidates with offline test downloads, daily quiz streaks, and push notification alerts.',
     url: 'https://play.google.com/store/apps/details?id=com.jkssbprep.app',
     icon: Smartphone,
-    tags: ['React Native', 'Expo', 'Redux', 'EAS'],
+    badge: 'Mobile App',
+    badgeType: 'mobile',
+    featured: true,
+    metrics: '4.8 ★ Play Store',
+    tags: ['React Native', 'Expo', 'Redux', 'EAS Build'],
+    highlights: [
+      'Offline test caching for remote area study',
+      'Sub-second push notifications for exam updates',
+      'Cross-platform codebase deployed with Expo EAS',
+    ],
+  },
+  {
+    id: 'flowdesk-telemetry',
+    name: 'Flowdesk Telemetry',
+    category: 'saas',
+    categoryLabel: 'Product Engineering',
+    type: 'High-throughput Dashboard',
+    description:
+      'Real-time analytical telemetry interface engineered for multi-tenant monitoring, sub-second event log streaming, and subscription health tracking.',
+    url: null,
+    icon: CodeXml,
+    badge: 'Internal Suite',
+    badgeType: 'internal',
+    featured: false,
+    metrics: 'Sub-second Latency',
+    tags: ['Node.js', 'TypeScript', 'Tailwind', 'Redis'],
+    highlights: [
+      'Live metric charts powered by WebSockets',
+      'Multi-tenant role-based access security',
+      'Granular performance logs & audit history',
+    ],
   },
 ]
 
@@ -85,6 +162,8 @@ export default function HomePage() {
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0, opacity: 0 })
   const [formStatus, setFormStatus] = useState(null)
   const [formMessage, setFormMessage] = useState('')
+  const [activeCategory, setActiveCategory] = useState('all')
+  const [selectedProjectModal, setSelectedProjectModal] = useState(null)
 
 
   // Calculate sliding pill coordinates
@@ -295,7 +374,7 @@ export default function HomePage() {
 
       <header className="site-header">
         <a className="logo" href="#home">
-          zeileet<span className="logo-dot">.</span>
+          zeileet<span className="logo-dot">.</span><span style={{ color: "var(--accent-blue)", fontSize: "0.8rem", marginTop: "10px" }}>in</span>
         </a>
 
         <nav
@@ -414,21 +493,21 @@ export default function HomePage() {
             {/* Left Column */}
             <div className="hero-left">
               <p className="hero-intro">Hello, We are</p>
-              <h1 className="hero-title">ZEILEET.</h1>
+              <h1 className="hero-title">ZEILEET.<span style={{color: "var(--accent-blue)"}}>in</span></h1>
               <p className="hero-copy">
                 We design and build software products for web and mobile with sharp focus.
                 We turn ideas into production-ready digital products that connect people and drive growth.
               </p>
 
               <div className="email-pill-container">
-                <span className="email-text">zeileet3@gmail.com</span>
+                <span className="email-text">contact@zeileet.in</span>
                 <button className="email-copy-btn" onClick={handleCopyEmail}>
                   {copied ? 'Copied!' : 'Copy'}
                 </button>
               </div>
 
               <div className="hero-contacts">
-                <a className="contact-btn contact-btn-blue" href="mailto:zeileet3@gmail.com" title="Email Us">
+                <a className="contact-btn contact-btn-blue" href="mailto:contact@zeileet.in" title="Email Us">
                   <Mail size={20} />
                 </a>
               </div>
@@ -503,74 +582,213 @@ export default function HomePage() {
 
         {/* Selected Works Section */}
         <section className="section-block projects-block" id="works">
-          <div className="section-title-row">
-            <h2>Selected works</h2>
+          <div className="section-header-block">
+            <div className="section-title-row">
+              <h2>Selected works</h2>
+              <span className="works-count-badge">
+                {projects.filter((p) => activeCategory === 'all' || p.category === activeCategory).length} Featured
+              </span>
+            </div>
+
+            {/* Filter Tabs */}
+            <div className="works-filter-bar" role="tablist" aria-label="Project Categories">
+              {projectCategories.map((cat) => (
+                <button
+                  key={cat.key}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeCategory === cat.key}
+                  className={`filter-tab ${activeCategory === cat.key ? 'active' : ''}`}
+                  onClick={() => setActiveCategory(cat.key)}
+                >
+                  {cat.key === 'all' && <Layers size={14} />}
+                  {cat.key === 'web' && <Globe size={14} />}
+                  {cat.key === 'mobile' && <Smartphone size={14} />}
+                  {cat.key === 'saas' && <CodeXml size={14} />}
+                  {cat.label}
+                </button>
+              ))}
+            </div>
           </div>
 
-          <div className="projects-grid">
-            {projects.map((project) => {
-              const Icon = project.icon
-              return (
-                <article className="project-card" key={project.name}>
-                  <span className="project-monogram">{project.name[0]}</span>
+          {/* Masonry Grid */}
+          <div className="works-masonry-grid">
+            {projects
+              .filter((project) => activeCategory === 'all' || project.category === activeCategory)
+              .map((project) => {
+                const Icon = project.icon
+                return (
+                  <article className="works-masonry-card" key={project.id}>
+                    <span className="works-monogram-watermark">{project.name[0]}</span>
 
-                  <header className="project-card-header">
-                    <div className="project-icon-wrap">
-                      <Icon size={20} />
+                    {/* Card Top Header */}
+                    <div className="works-card-top">
+                      <div className="works-icon-avatar">
+                        <Icon size={18} />
+                      </div>
+                      <span className={`badge-pill badge-${project.badgeType}`}>
+                        <span className="badge-dot" />
+                        {project.badge}
+                      </span>
                     </div>
-                    {project.url ? (
-                      <span className="project-status-badge">Live Project</span>
-                    ) : (
-                      <span className="project-status-badge status-internal">Internal Tool</span>
-                    )}
-                  </header>
 
-                  <div className="project-card-content">
-                    <h3>
+                    {/* Card Details */}
+                    <div className="works-card-body">
+                      <div className="works-card-meta">
+                        <span className="works-category-label">{project.categoryLabel}</span>
+                      </div>
+
+                      <h3 className="works-card-title">
+                        {project.url ? (
+                          <a
+                            className="works-link"
+                            href={project.url}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {project.name}
+                            <ExternalLink className="works-link-icon" size={15} />
+                          </a>
+                        ) : (
+                          project.name
+                        )}
+                      </h3>
+
+                      <p className="works-card-type">{project.type}</p>
+                      <p className="works-card-desc">{project.description}</p>
+
+                      {project.metrics && (
+                        <div className="works-metrics-row">
+                          <span className="metrics-pill">
+                            <Zap size={12} /> {project.metrics}
+                          </span>
+                        </div>
+                      )}
+
+                      <div className="works-card-tags">
+                        {project.tags.map((tag) => (
+                          <span key={tag} className="works-tag">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Card Footer */}
+                    <div className="works-card-footer">
+                      <button
+                        className="works-detail-btn"
+                        type="button"
+                        onClick={() => setSelectedProjectModal(project)}
+                      >
+                        Inspect Details
+                      </button>
+
                       {project.url ? (
                         <a
-                          className="project-link"
+                          className="works-cta-btn"
                           href={project.url}
                           target="_blank"
                           rel="noreferrer"
+                          aria-label={`Visit ${project.name}`}
                         >
-                          {project.name}
+                          Visit Live <ArrowRight size={14} />
                         </a>
                       ) : (
-                        project.name
+                        <span className="works-cta-btn action-inactive">
+                          Internal Suite <ArrowRight size={14} />
+                        </span>
                       )}
-                    </h3>
-                    <p className="project-desc">{project.type}</p>
+                    </div>
+                  </article>
+                )
+              })}
+          </div>
+
+          {/* Quick View Modal */}
+          {selectedProjectModal && (
+            <div
+              className="project-modal-backdrop"
+              onClick={() => setSelectedProjectModal(null)}
+              role="dialog"
+              aria-modal="true"
+            >
+              <div
+                className="project-modal-card"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  className="project-modal-close"
+                  type="button"
+                  aria-label="Close details modal"
+                  onClick={() => setSelectedProjectModal(null)}
+                >
+                  <X size={20} />
+                </button>
+
+                <div className="project-modal-content">
+                  <div className="project-modal-header">
+                    <div>
+                      <span className="works-category-label">
+                        {selectedProjectModal.categoryLabel}
+                      </span>
+                      <h3>{selectedProjectModal.name}</h3>
+                      <p className="project-modal-type">{selectedProjectModal.type}</p>
+                    </div>
+
+                    <span className={`badge-pill badge-${selectedProjectModal.badgeType}`}>
+                      <span className="badge-dot" />
+                      {selectedProjectModal.badge}
+                    </span>
                   </div>
 
-                  <footer className="project-card-footer">
-                    <div className="project-tags">
-                      {project.tags.map((tag) => (
-                        <span key={tag} className="project-tag">
+                  <p className="project-modal-desc">{selectedProjectModal.description}</p>
+
+                  {selectedProjectModal.metrics && (
+                    <div className="modal-metrics-box">
+                      <Zap size={15} /> Key Metric: <strong>{selectedProjectModal.metrics}</strong>
+                    </div>
+                  )}
+
+                  <div className="project-modal-highlights">
+                    <h4>Key Specs & Deliverables</h4>
+                    <ul>
+                      {selectedProjectModal.highlights.map((item, idx) => (
+                        <li key={idx}>
+                          <CheckCircle2 size={16} className="highlight-icon" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="project-modal-tech">
+                    <h4>Technology Stack</h4>
+                    <div className="works-card-tags">
+                      {selectedProjectModal.tags.map((tag) => (
+                        <span key={tag} className="works-tag modal-tag">
                           {tag}
                         </span>
                       ))}
                     </div>
-                    {project.url ? (
+                  </div>
+
+                  {selectedProjectModal.url && (
+                    <div className="modal-footer-actions">
                       <a
-                        className="project-action-btn"
-                        href={project.url}
+                        className="cta-blue modal-visit-btn"
+                        href={selectedProjectModal.url}
                         target="_blank"
                         rel="noreferrer"
-                        aria-label={`Visit ${project.name}`}
                       >
-                        Visit <ArrowRight size={14} />
+                        Visit Live Project <ExternalLink size={15} />
                       </a>
-                    ) : (
-                      <span className="project-action-btn action-inactive">
-                        Active <ArrowRight size={14} />
-                      </span>
-                    )}
-                  </footer>
-                </article>
-              )
-            })}
-          </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
         </section>
 
         {/* Founder Section */}
