@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
-import { ArrowRight, ShieldCheck } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { HugeiconsIcon } from '@hugeicons/react'
+import { ArrowLeft01Icon, ArrowRight01Icon } from '@hugeicons/core-free-icons'
 
 const policySections = [
   {
@@ -58,54 +58,65 @@ export default function PrivacyPolicyPage() {
     <div className="page">
       <header className="site-header">
         <Link className="logo" to="/">
-          zeileet<span className="logo-dot">.</span>
+          zeileet<span className="logo-dot">.</span><span className="logo-tld">in</span>
         </Link>
 
         <div className="header-actions">
-          <Link className="pill-btn" to="/account-deletion-request">
-            Delete Account <ArrowRight size={18} strokeWidth={2.2} />
+          <Link className="btn-editorial-light" to="/account-deletion-request">
+            Delete Account <HugeiconsIcon icon={ArrowRight01Icon} size={15} color="currentColor" strokeWidth={1.5} />
           </Link>
-          <Link className="pill-btn" to="/">
-            Back Home <ArrowRight size={18} strokeWidth={2.2} />
+          <Link className="btn-editorial-dark" to="/">
+            <HugeiconsIcon icon={ArrowLeft01Icon} size={16} color="currentColor" strokeWidth={1.5} /> Back Home
           </Link>
         </div>
       </header>
 
-      <main className="hero-shell privacy-shell">
-        <div className="hero-shell-clip-bg" aria-hidden="true" />
+      <div className="site-container">
+        <main className="subpage-container">
+          <p className="section-label">Legal & Privacy</p>
+          <h1 className="section-title">
+            General <strong>Privacy Policy</strong>
+          </h1>
+          <p className="section-subtitle">
+            Effective date: April 25, 2026. This policy applies to all websites, web applications, and Expo mobile apps operated by Zeileet.
+          </p>
 
-        <section className="privacy-hero">
-          <p className="privacy-eyebrow">
-            <ShieldCheck size={16} /> Privacy Policy
-          </p>
-          <h1 className="privacy-title">General Privacy Policy for all Zeileet Services</h1>
-          <p className="privacy-copy">
-            Effective date: April 25, 2026. This policy is intended to be reusable across
-            our websites, web apps, mobile apps, and future digital products.
-          </p>
-        </section>
+          <div className="subpage-grid">
+            {policySections.map((section) => (
+              <article key={section.title} className="subpage-card">
+                <h2>{section.title}</h2>
+                <p>{section.body}</p>
+              </article>
+            ))}
+          </div>
 
-        <section className="privacy-grid" aria-label="Privacy policy sections">
-          {policySections.map((section) => (
-            <article key={section.title} className="privacy-card">
-              <h2>{section.title}</h2>
-              <p>{section.body}</p>
-            </article>
-          ))}
-        </section>
+          <div className="subpage-card" style={{ marginTop: '2rem', border: '1.5px solid var(--text-primary)' }}>
+            <h2>13. Contact & Rights Requests</h2>
+            <p style={{ marginBottom: '1rem' }}>
+              For privacy inquiries, contact us at{' '}
+              <a href="mailto:contact@zeileet.in" style={{ color: 'var(--text-primary)', fontWeight: 700, textDecoration: 'underline' }}>
+                contact@zeileet.in
+              </a>.
+            </p>
+            <p>
+              To submit an account or personal data deletion request, visit the{' '}
+              <Link to="/account-deletion-request" style={{ color: 'var(--text-primary)', fontWeight: 700, textDecoration: 'underline', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                Universal Account Deletion Portal <HugeiconsIcon icon={ArrowRight01Icon} size={15} color="currentColor" strokeWidth={1.5} />
+              </Link>
+            </p>
+          </div>
+        </main>
 
-        <section className="privacy-contact" aria-label="Privacy contact details">
-          <h2>13. Contact us</h2>
-          <p>
-            For privacy questions or requests, contact us at{' '}
-            <a href="mailto:zeileet3@gmail.com">zeileet3@gmail.com</a>.
-          </p>
-          <p>
-            For account deletion requests across any Zeileet product, use the{' '}
-            <Link to="/account-deletion-request">Universal Account Deletion Request page</Link>.
-          </p>
-        </section>
-      </main>
+        <footer className="site-footer">
+          <div className="footer-copy">
+            © {new Date().getFullYear()} <strong>Zeileet</strong>. All rights reserved.
+          </div>
+          <div className="footer-links">
+            <Link className="footer-link" to="/">Home</Link>
+            <Link className="footer-link" to="/account-deletion-request">Account Deletion</Link>
+          </div>
+        </footer>
+      </div>
     </div>
   )
 }
