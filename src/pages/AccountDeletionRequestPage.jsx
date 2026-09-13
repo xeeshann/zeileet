@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { HugeiconsIcon } from '@hugeicons/react'
-import { ArrowLeft01Icon, ArrowRight01Icon } from '@hugeicons/core-free-icons'
+import { ArrowLeft01Icon, ArrowRight01Icon, ArrowUpRight01Icon } from '@hugeicons/core-free-icons'
 
 function makeRequestId() {
   const stamp = Date.now().toString(36).toUpperCase()
@@ -207,6 +207,7 @@ export default function AccountDeletionRequestPage() {
           </div>
           <div className="footer-links">
             <Link className="footer-link" to="/">Home</Link>
+            <Link className="footer-link" to="/timeline">Timeline</Link>
             <Link className="footer-link" to="/privacy-policy">Privacy Policy</Link>
           </div>
         </footer>

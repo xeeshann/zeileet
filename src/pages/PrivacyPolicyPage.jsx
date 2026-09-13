@@ -113,6 +113,7 @@ export default function PrivacyPolicyPage() {
           </div>
           <div className="footer-links">
             <Link className="footer-link" to="/">Home</Link>
+            <Link className="footer-link" to="/timeline">Timeline</Link>
             <Link className="footer-link" to="/account-deletion-request">Account Deletion</Link>
           </div>
         </footer>

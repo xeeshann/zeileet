@@ -282,7 +282,7 @@ export default function HomePage() {
             className={`nav-link ${activeSection === 'founder' ? 'active' : ''}`}
             href="#founder"
           >
-            About Me
+            About Us
           </a>
           <a
             className={`nav-link ${activeSection === 'works' ? 'active' : ''}`}
@@ -290,6 +290,9 @@ export default function HomePage() {
           >
             Portfolio
           </a>
+          <Link className="nav-link" to="/timeline">
+            Timeline
+          </Link>
           <a
             className={`nav-link ${activeSection === 'services' ? 'active' : ''}`}
             href="#services"
@@ -344,11 +347,14 @@ export default function HomePage() {
             Home
           </a>
           <a href="#founder" onClick={() => { setIsMenuOpen(false); setActiveSection('founder'); }}>
-            About Me
+            About Us
           </a>
           <a href="#works" onClick={() => { setIsMenuOpen(false); setActiveSection('works'); }}>
             Portfolio
           </a>
+          <Link to="/timeline" onClick={() => setIsMenuOpen(false)}>
+            Timeline & Roadmap
+          </Link>
           <a href="#services" onClick={() => { setIsMenuOpen(false); setActiveSection('services'); }}>
             Services
           </a>
@@ -832,6 +838,9 @@ export default function HomePage() {
                 </div>
 
                 <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  <Link className="btn-editorial-light" to="/timeline" style={{ width: '100%', justifyContent: 'space-between' }}>
+                    Company Timeline <HugeiconsIcon icon={ArrowRight01Icon} size={16} color="currentColor" strokeWidth={1.5} />
+                  </Link>
                   <Link className="btn-editorial-light" to="/privacy-policy" style={{ width: '100%', justifyContent: 'space-between' }}>
                     Privacy Policy <HugeiconsIcon icon={ArrowRight01Icon} size={16} color="currentColor" strokeWidth={1.5} />
                   </Link>
@@ -851,6 +860,7 @@ export default function HomePage() {
             <div className="footer-links">
               <a className="footer-link" href="#home">Home</a>
               <a className="footer-link" href="#founder">About</a>
+              <Link className="footer-link" to="/timeline">Timeline</Link>
               <a className="footer-link" href="#services">Services</a>
               <a className="footer-link" href="#works">Portfolio</a>
               <Link className="footer-link" to="/privacy-policy">Privacy Policy</Link>
